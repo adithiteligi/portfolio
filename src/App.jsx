@@ -12,13 +12,13 @@ const experiences = [
   {
     company: 'Deloitte', dates: 'June 2026 – August 2026',
     role: 'Data & AI Solutions Engineer Intern',
-    description: 'Helped teams find the right people and projects by connecting internal knowledge with AI-powered search.',
+    description: 'Built the data ingestion pipeline and knowledge graph behind an AI assistant that helped a healthcare account connect scattered documents, find people and projects, and navigate onboarding.',
     skills: ['Python', 'FastAPI', 'FalkorDB', 'LLMs'],
   },
   {
     company: 'Huntington National Bank', dates: 'May 2025 – August 2025',
     role: 'Machine Learning Operations Intern',
-    description: 'Made day-to-day machine learning work smoother by automating data pipelines, testing, and security reporting.',
+    description: 'Built a pipeline that ran repository tests, formatting, and security checks before opening a pull request, then explored generating pytest tests from existing code with n8n.',
     skills: ['Python', 'Azure DevOps', 'CI/CD', 'n8n'],
   },
   {
@@ -30,7 +30,7 @@ const experiences = [
   {
     company: 'Nationwide Children’s Hospital Research Institute', dates: 'May 2024 – May 2025',
     role: 'Data Analytics Research Intern',
-    description: 'Worked with spatial datasets and created visualizations during a data analytics internship at the research institute.',
+    description: 'Mapped cell coordinates and analyzed nearby clusters to help researchers investigate patterns that could affect antibody access to the tumor microenvironment.',
     skills: ['Python', 'Spatial analytics', 'Data visualization'],
   },
   {
@@ -42,7 +42,7 @@ const experiences = [
   {
     company: 'Indian Students Association', dates: 'August 2023 – May 2025',
     role: 'Secretary',
-    description: 'Helped organize cultural events and kept students, campus organizations, and faculty connected.',
+    description: 'Kept members connected with executive leadership and coordinated event logistics to help cultural programs run smoothly.',
     skills: ['Leadership', 'Communication', 'Event planning'],
   },
 ]
@@ -84,6 +84,11 @@ function App() {
         <section id="about" className="section">
           <h2>About Me</h2>
           <div className="notebook">
+            <nav className="notebook-tabs" aria-label="Journal tabs">
+              <a href="#experience">Experience</a>
+              <a href="#projects">Projects</a>
+              <a href="/now/">Notes</a>
+            </nav>
             <div className="notebook-page photo-page">
               <figure className="notebook-photo">
                 <span className="photo-tape" aria-hidden="true" />
@@ -100,7 +105,7 @@ function App() {
               <p>I’m studying Data Analytics at Ohio State, and I’m interested in finding patterns in data and building products people use. <a className="journal-link" href="#experience">My experience</a> so far spans healthcare, banking, and consulting, where I’ve built data tools and AI-powered software that help people make sense of information and leverage it to make better decisions.</p>
               <p>At Ohio State, I’m President of the Big Data &amp; Analytics Association, where I’ve led efforts to help students build on their classroom learning through technical programs, hands-on projects, and events that connect them with industry professionals.</p>
               <p>Writing is another big part of my life. I love writing poems, short stories, essays, and plenty of journal entries, and I bring that storytelling perspective to my work. Beyond the technical details, I think about how the pieces connect, what matters, and how to communicate it clearly so people can make informed decisions.</p>
-              <p>I also love traveling, going to concerts, and spending time with friends and family. I’ve been collecting vinyl ever since I got a record player for my 15th birthday. You can browse a few favorites on <a className="journal-link" href="/records/">my record shelf</a>.</p>
+              <p>I also love traveling, going to concerts, and spending time with friends and family. I’ve been collecting vinyls ever since I got a record player for my 15th birthday. You can browse a few favorites on <a className="journal-link" href="/records/">my record shelf</a>.</p>
               <p>For a little more about life lately, here’s <a className="journal-link" href="/now/">what I’m up to now</a>.</p>
               <span className="notebook-signature">Thanks for stopping by ♡</span>
               <span className="page-number">02</span>
@@ -127,8 +132,8 @@ function App() {
                 <div className="project-link">View project ↗</div>
               </a>
               <a className="project-card" href="https://github.com/vickynguyen356-web/3902TeamUnoProject" target="_blank" rel="noopener noreferrer">
-                <div className="project-title">Team Uno — Mario Game</div>
-                <div className="project-desc">An ongoing team project in C# and MonoGame, recreating Mario’s movement, animated characters, enemies, and scrolling levels.</div>
+                <div className="project-title">Mario Game</div>
+                <div className="project-desc">A Mario recreation in C# and MonoGame with connected worlds, power-ups, enemy combat, and a Bowser Party finale filled with platforms and Bowsers.</div>
                 <div className="project-link">View project ↗</div>
               </a>
               <a className="project-card" href="https://github.com/adithiteligi/Goldman-Technical-Project" target="_blank" rel="noopener noreferrer">

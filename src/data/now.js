@@ -1,7 +1,7 @@
 export const nowUpdates = [
   {
     "id": "a-summer-in-chicago",
-    "date": "2026-08-08",
+    "date": "2026-08-07",
     "title": "Signing off from a summer in Chicago",
     "paragraphs": [
       "Today marks the end of my summer internship at Deloitte, and I’m finding it hard to fit a whole summer into a goodbye. There’s the work I did and everything I learned, but there’s also the life I got to build around it. For a few months, Chicago became home.",
