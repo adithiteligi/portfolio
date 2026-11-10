@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "deloitte",
+    "file": "/organizations/deloitte.ico",
+    "source": "https://www.deloitte.com/content/dam/assets-shared/icons/us/favicon.ico"
+  },
+  {
+    "slug": "huntington",
+    "file": "/organizations/huntington.ico",
+    "source": "https://ir.huntington.com/"
+  },
+  {
+    "slug": "goldman-sachs",
+    "file": "/organizations/goldman-sachs.svg",
+    "source": "https://cdn.gs.com/images/goldman-sachs/v2/gs-favicon.svg"
+  },
+  {
+    "slug": "nationwide-childrens",
+    "file": "/organizations/nationwide-childrens.ico",
+    "source": "https://www.nationwidechildrens.org/frontend/assets/img/favicon.ico"
+  },
+  {
+    "slug": "bdaa",
+    "file": "/organizations/bdaa.png",
+    "source": "https://www.bdaaosu.org/_next/image?url=%2FBDAALogo.png&w=3840&q=75"
+  },
+  {
+    "slug": "isa",
+    "file": "/organizations/isa.jpg",
+    "source": "https://images.editor.website/uploads/b/cb3a3570-cba4-11ea-90fd-bf240f3dfd15/db03c841c9fd3bf9cb9e27bf31bc82f9.jpeg"
+  }
+]

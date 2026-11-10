@@ -1,279 +1,160 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
+import VinylShelf from './components/VinylShelf'
+import SkillsBag from './components/SkillsBag'
+import SiteNavigation from './components/SiteNavigation'
+import NowPage from './components/NowPage'
+import ExperienceList from './components/ExperienceList'
+import SiteFooter from './components/SiteFooter'
+import PortfolioIntro, { shouldShowIntro } from './components/PortfolioIntro'
 
+const experiences = [
+  {
+    company: 'Deloitte', dates: 'June 2026 – August 2026',
+    role: 'Data & AI Solutions Engineer Intern',
+    description: 'Helped teams find the right people and projects by connecting internal knowledge with AI-powered search.',
+    skills: ['Python', 'FastAPI', 'FalkorDB', 'LLMs'],
+  },
+  {
+    company: 'Huntington National Bank', dates: 'May 2025 – August 2025',
+    role: 'Machine Learning Operations Intern',
+    description: 'Made day-to-day machine learning work smoother by automating data pipelines, testing, and security reporting.',
+    skills: ['Python', 'Azure DevOps', 'CI/CD', 'n8n'],
+  },
+  {
+    company: 'Goldman Sachs', dates: 'October 2024 – January 2025',
+    role: 'Engineering Emerging Leader Intern',
+    description: 'Worked with a team to build an app that helps people explore how mutual fund investments could grow over time.',
+    skills: ['Full-stack development', 'APIs', 'Team collaboration'],
+  },
+  {
+    company: 'Nationwide Children’s Hospital Research Institute', dates: 'May 2024 – May 2025',
+    role: 'Data Analytics Research Intern',
+    description: 'Worked with spatial datasets and created visualizations during a data analytics internship at the research institute.',
+    skills: ['Python', 'Spatial analytics', 'Data visualization'],
+  },
+  {
+    company: 'Big Data & Analytics Association', dates: 'November 2025 – Present',
+    role: 'President',
+    description: 'Bring students and industry together through technical programs, events, and sponsorships at Ohio State.',
+    skills: ['Leadership', 'Community building', 'Event planning'],
+  },
+  {
+    company: 'Indian Students Association', dates: 'August 2023 – May 2025',
+    role: 'Secretary',
+    description: 'Helped organize cultural events and kept students, campus organizations, and faculty connected.',
+    skills: ['Leadership', 'Communication', 'Event planning'],
+  },
+]
 function App() {
-  // Typewriter effect for welcome-title
-  const staticPrefix = 'Data ';
-  const dynamicWords = ['Student', 'Scientist', 'Analyst', 'Engineer'];
-  const [typedTitle, setTypedTitle] = useState('');
-  const [wordIndex, setWordIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  // Cursor glow state
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-
-  useEffect(() => {
-    let timeout;
-    const currentWord = dynamicWords[wordIndex];
-    if (!isDeleting) {
-      // Typing
-      if (charIndex < currentWord.length) {
-        setTypedTitle(staticPrefix + currentWord.slice(0, charIndex + 1));
-        timeout = setTimeout(() => setCharIndex(charIndex + 1), 70);
-      } else {
-        // Pause before deleting
-        timeout = setTimeout(() => setIsDeleting(true), 1200);
-      }
-    } else {
-      // Deleting
-      if (charIndex > 0) {
-        setTypedTitle(staticPrefix + currentWord.slice(0, charIndex - 1));
-        timeout = setTimeout(() => setCharIndex(charIndex - 1), 40);
-      } else {
-        // Move to next word
-        setIsDeleting(false);
-        setWordIndex((wordIndex + 1) % dynamicWords.length);
-      }
-    }
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, wordIndex]);
-
-  useEffect(() => {
-    // Enable smooth scrolling for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-          behavior: 'smooth'
-        });
-      });
-    });
-
-    // Intersection Observer for fade-in/scale-up
-    const cards = document.querySelectorAll('.section > div');
-    const observer = new window.IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-          } else {
-            entry.target.classList.remove('in-view');
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    cards.forEach(card => observer.observe(card));
-    return () => observer.disconnect();
-  }, []);
-
-  // Cursor glow effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-      // Card edge glow effect
-      document.querySelectorAll('.timeline-card').forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--glow-x', `${x}px`);
-        card.style.setProperty('--glow-y', `${y}px`);
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
+  const [showIntro, setShowIntro] = useState(shouldShowIntro)
+  const finishIntro = useCallback(() => setShowIntro(false), [])
+  const page = window.location.pathname.replace(/\/+$/, '')
+  if (page === '/now') return <div className="portfolio-container"><SiteNavigation page="now" /><NowPage /><SiteFooter /></div>
+  if (page === '/records') return <div className="portfolio-container"><SiteNavigation page="records" /><main className="records-page"><a className="records-back-link" href="/#about">← Back to my journal</a><VinylShelf /></main><SiteFooter /></div>
   return (
     <>
-      {/* Cursor Glow */}
-      <div
-        className="cursor-glow"
-        style={{ left: cursorPos.x - 80, top: cursorPos.y - 80 }}
-      ></div>
-      <div className="bubble-bg">
-        <div className="bubble bubble1"></div>
-        <div className="bubble bubble2"></div>
-        <div className="bubble bubble3"></div>
-      </div>
-      <div className="portfolio-container">
-        {/* Navigation */}
-        <nav className="navbar">
-          <ul>
-            <li><a href="#welcome">Welcome</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </nav>
+      {showIntro && <PortfolioIntro onComplete={finishIntro} />}
+      <div className="portfolio-container" inert={showIntro ? true : undefined}>
+        <SiteNavigation />
 
         {/* Welcome Section */}
-        <section id="welcome" className="section">
-          <div className="welcome-hero">
-            <div className="welcome-left">
-              <h1><span className="welcome-name">Adithi Math</span></h1>
-              <h2 className="welcome-title">{typedTitle}<span className="typewriter-cursor">|</span></h2>
-              <p className="welcome-intro"> Hello! My name is Adithi Math and I am a Data Analytics student at the Ohio State University.</p>
-              <div className="welcome-socials">
-                <a href="https://github.com/digit-aditi" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i className="fa-brands fa-github"></i></a>
-                <a href="https://linkedin.com/in/adithimath" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i className="fa-brands fa-linkedin"></i></a>
-              </div>
-              <a href="#contact" className="welcome-btn">Contact Me</a>
-            </div>
-            <div className="welcome-right">
-              <img src="/removeBG.png" alt="Adithi Math" className="welcome-img" />
-            </div>
+        <section id="welcome" className="section welcome-opening" aria-labelledby="welcome-heading">
+          <img
+            src="/illustrations/adithi-doodle.png"
+            alt="A simple black-ink doodle of a girl with shoulder-length hair and a bow necklace."
+            className="welcome-illustration"
+            width="1254"
+            height="1254"
+            fetchPriority="high"
+          />
+          <h1 id="welcome-heading">Adithi Math</h1>
+          <p className="welcome-intro">Data Analytics student at The Ohio State University.</p>
+          <div className="welcome-actions">
+            <a href="#about">Get to know me <span aria-hidden="true">↓</span></a>
+            <span className="welcome-divider" aria-hidden="true">/</span>
+            <a href="/now/">What I’m up to <span aria-hidden="true">↗</span></a>
           </div>
-          <button
-            className="scroll-down-btn"
-            onClick={() => {
-              document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-            }}
-            aria-label="Scroll down to About Me"
-          >
-            <span className="arrow">↓</span>
-          </button>
+          <div className="welcome-socials">
+            <button className="intro-replay" type="button" onClick={() => setShowIntro(true)}>Replay intro</button>
+          </div>
         </section>
 
         {/* About Section */}
         <section id="about" className="section">
           <h2>About Me</h2>
-          <div className="about-content">
-            <div className="about-text">
-              <p>
-              As a Data Analytics student, I love exploring new domains in the field of data analytics. I have dabbled into areas of healthcare analytics, financial technology, and machine learning operations. My passion is using data to uncover insights and drive impactful solutions across industries. 
-              Outside of academics, I love to travel, listen to music, and spend time with friends and family. I was gifted a record player for my 15th birthday and love to collect vinyls!
-              </p>
+          <div className="notebook">
+            <div className="notebook-page photo-page">
+              <figure className="notebook-photo">
+                <span className="photo-tape" aria-hidden="true" />
+                <img src="/profile.jpg" alt="Adithi Math" />
+              </figure>
+              <span className="page-number">01</span>
             </div>
-            <div className="about-image">
-              <img src="/profile.jpg" alt="Profile" />
+            <div className="notebook-binding" aria-hidden="true">
+              {Array.from({ length: 12 }, (_, i) => <span key={i} />)}
             </div>
+            <div className="notebook-page writing-page">
+              <span className="page-label">a few things about me</span>
+              <h3>hi, I’m Adithi!</h3>
+              <p>I’m studying Data Analytics at Ohio State, and I’m interested in finding patterns in data and building products people use. <a className="journal-link" href="#experience">My experience</a> so far spans healthcare, banking, and consulting, where I’ve built data tools and AI-powered software that help people make sense of information and leverage it to make better decisions.</p>
+              <p>At Ohio State, I’m President of the Big Data &amp; Analytics Association, where I’ve led efforts to help students build on their classroom learning through technical programs, hands-on projects, and events that connect them with industry professionals.</p>
+              <p>Writing is another big part of my life. I love writing poems, short stories, essays, and plenty of journal entries, and I bring that storytelling perspective to my work. Beyond the technical details, I think about how the pieces connect, what matters, and how to communicate it clearly so people can make informed decisions.</p>
+              <p>I also love traveling, going to concerts, and spending time with friends and family. I’ve been collecting vinyl ever since I got a record player for my 15th birthday. You can browse a few favorites on <a className="journal-link" href="/records/">my record shelf</a>.</p>
+              <p>For a little more about life lately, here’s <a className="journal-link" href="/now/">what I’m up to now</a>.</p>
+              <span className="notebook-signature">Thanks for stopping by ♡</span>
+              <span className="page-number">02</span>
+            </div>
+            <img className="journal-mascot" src="/illustrations/adithi-peeking.png" alt="" aria-hidden="true" width="170" height="170" />
           </div>
         </section>
 
-        {/* Education Section */}
-        <section id="education" className="section">
-          <h2>Education</h2>
-          <div className="education-card">
-            <div className="education-title"><strong>The Ohio State University, College of Arts & Sciences</strong></div>
-            <div className="education-major"><strong>Major in Data Analytics with a Specialization in Computational Analytics</strong></div>
-            <div className="education-minor">Minor in Business</div>
-            <div className="education-grad">Graduating Spring 2027</div>
-            <div className="education-coursework"><strong>Coursework:</strong> Object Oriented Programming, Data Structures & Algorithms, Linear Regression Modeling, Linear Algebra</div>
-          </div>
-          <div className="education-involvement-row">
-            <div className="education-involvement-card">
-              <div className="education-involvement-title"><strong>Business Builders</strong></div>
-              <div className="education-involvement-role">Founding Cohort Member</div>
-              <div className="education-involvement-blurb">Selected as 1 of 45 for the founding cohort, shaping the entrepreneurship experience at OSU and collaborating on innovative business solutions.</div>
-            </div>
-            <div className="education-involvement-card">
-              <div className="education-involvement-title"><strong>Indian Students Association</strong></div>
-              <div className="education-involvement-role">Secretary</div>
-              <div className="education-involvement-blurb">Secretary and main contact for 3,000 members, helping organize large cultural events and coordinate with student orgs and faculty.</div>
-            </div>
-            <div className="education-involvement-card">
-              <div className="education-involvement-title"><strong>Big Data & Analytics Association</strong></div>
-              <div className="education-involvement-role">Corporate Relations Director, Marketing Director</div>
-              <div className="education-involvement-blurb">Led analytics projects, expanded sponsorships, organized tech talks, and boosted engagement through content creation and social media management.</div>
-            </div>
-          </div>
-        </section>
-
-        {/* Experience Section */}
-        <section id="experience" className="section">
-          <h2>Experience</h2>
-          <div className="timeline-container">
-            <div className="timeline">
-              {/* Huntington National Bank */}
-              <div className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-card">
-                  <div className="timeline-header">
-                    <strong>Huntington National Bank</strong> <span className="timeline-date">May 2025 – August 2025</span>
-                  </div>
-                  <div className="timeline-role">Incoming Machine Learning Operations Intern</div>
-                  <div className="timeline-blurb">Designed and deployed scalable machine learning solutions, building data pipelines and automating model monitoring for real-time financial applications.</div>
-                </div>
-              </div>
-              {/* Goldman Sachs */}
-              <div className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-card">
-                  <div className="timeline-header">
-                    <strong>Goldman Sachs Emerging Leaders Series</strong> <span className="timeline-date">October 2024 – Present</span>
-                  </div>
-                  <div className="timeline-role">Engineering Emerging Leader</div>
-                  <div className="timeline-blurb">Selected for a 5-month Agile-based program focused on technical development, mentorship, and building a full-stack web app for mutual fund investment analysis.</div>
-                </div>
-              </div>
-              {/* Nationwide Children's Hospital Research Institute */}
-              <div className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-card">
-                  <div className="timeline-header">
-                    <strong>Nationwide Children's Hospital Research Institute</strong> <span className="timeline-date">May 2024 – Present</span>
-                  </div>
-                  <div className="timeline-role">Data Analytics Research Intern</div>
-                  <div className="timeline-blurb">Analyzed spatial data and developed computational models to uncover tumor progression patterns in breast cancer using advanced Python and data mining techniques.</div>
-                </div>
-              </div>
-              {/* OSU Libraries */}
-              <div className="timeline-item">
-                <div className="timeline-dot"></div>
-                <div className="timeline-card">
-                  <div className="timeline-header">
-                    <strong>OSU Libraries</strong> <span className="timeline-date">March 2024 – January 2025</span>
-                  </div>
-                  <div className="timeline-role">Data Analytics Intern</div>
-                  <div className="timeline-blurb">Enhanced archive accessibility and optimized user navigation by creating interactive data visualizations and streamlining workflows for cataloging datasets.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ExperienceList experiences={experiences} />
 
         {/* Projects Section */}
         <section id="projects" className="section">
           <h2>Projects</h2>
           <div className="projects-content">
             <div className="project-card-row">
+              <a className="project-card" href="https://github.com/adithiteligi/Financial-Milestones-App" target="_blank" rel="noopener noreferrer">
+                <div className="project-title">Money Milestones</div>
+                <div className="project-desc">A financial planning app that helps students and young professionals break college costs and homeownership goals into visual roadmaps and track their progress.</div>
+                <div className="project-link">View project ↗</div>
+              </a>
+              <a className="project-card" href="https://github.com/adithiteligi/Adithi_Sprint0MonoGameProject" target="_blank" rel="noopener noreferrer">
+                <div className="project-title">MonoGame — Dog &amp; Tennis Ball</div>
+                <div className="project-desc">An interactive MonoGame demo with a keyboard-controlled dog and a mouse-controlled tennis ball, featuring movement, sprite animation, and bouncing.</div>
+                <div className="project-link">View project ↗</div>
+              </a>
+              <a className="project-card" href="https://github.com/vickynguyen356-web/3902TeamUnoProject" target="_blank" rel="noopener noreferrer">
+                <div className="project-title">Team Uno — Mario Game</div>
+                <div className="project-desc">An ongoing team project in C# and MonoGame, recreating Mario’s movement, animated characters, enemies, and scrolling levels.</div>
+                <div className="project-link">View project ↗</div>
+              </a>
               <a className="project-card" href="https://github.com/adithiteligi/Goldman-Technical-Project" target="_blank" rel="noopener noreferrer">
                 <div className="project-title">Goldman Mutual Fund Investment Calculator</div>
                 <div className="project-desc">Estimate potential returns on mutual fund investments by selecting a fund, entering an amount, and choosing a duration.</div>
-                <div className="project-link">@github.com/adithiteligi/Goldman-Technical-Project</div>
+                <div className="project-link">View project ↗</div>
               </a>
               <a className="project-card" href="https://github.com/arjunnarang24/STAT-3302" target="_blank" rel="noopener noreferrer">
                 <div className="project-title">Data Analysis Report – Predicting Animal Adoption at Long Beach Animal Shelter</div>
                 <div className="project-desc">Analyzed 29,000+ animal shelter records to model and predict adoption likelihood using logistic regression.</div>
-                <div className="project-link">@github.com/arjunnarang24/STAT-3302</div>
+                <div className="project-link">View project ↗</div>
               </a>
             </div>
           </div>
         </section>
 
-        {/* Contact Section */}
-        <section id="contact" className="section">
-          <div className="contact-content">
-            <div className="contact-icons-row">
-              <div className="contact-icon-card" onClick={() => {navigator.clipboard.writeText('adithi.math@gmail.com'); window.open('mailto:adithi.math@gmail.com');}} tabIndex={0} title="Copy email & open mail">
-                <img src="/image.png" alt="Email" className="contact-img-icon" />
-                <div className="contact-info">adithi.math@gmail.com</div>
-              </div>
-              <a className="contact-icon-card" href="https://linkedin.com/in/adithimath" target="_blank" rel="noopener noreferrer" tabIndex={0} title="Open LinkedIn">
-                <img src="/image copy 2.png" alt="LinkedIn" className="contact-img-icon" />
-                <div className="contact-info">@https://linkedin.com/in/adithimath</div>
-              </a>
-              <a className="contact-icon-card" href="https://github.com/adithiteligi" target="_blank" rel="noopener noreferrer" tabIndex={0} title="Open GitHub">
-                <img src="/Image-removebg-preview-2.png" alt="GitHub" className="contact-img-icon" />
-                <div className="contact-info">@https://github.com/adithiteligi</div>
-              </a>
-            </div>
-          </div>
-        </section>
+        <SkillsBag />
+        <div className="bottom-discoveries">
+        <a className="record-shelf-reminder" href="/records/">
+          <span className="tiny-record" aria-hidden="true" /><span>My record shelf <span aria-hidden="true">↗</span></span>
+        </a>
+        <a className="notes-reminder" href="/now/"><svg viewBox="0 0 60 64" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 6h35l-2 51H12Z M19 5v54M25 19h15M25 27h13M25 35h15M25 43h9" /></svg><span>Notes <span aria-hidden="true">↗</span></span></a>
+        </div>
+        <SiteFooter />
+
+
       </div>
     </>
   )
